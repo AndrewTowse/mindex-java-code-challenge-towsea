@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -50,7 +51,6 @@ public class DataBootstrap {
 
         Compensation[] compensations = null;
 
-        System.out.println("\n\nhere\n\n\n\n");
         try {
             compensations = objectMapper2.readValue(inputStream2, Compensation[].class);
         } catch (IOException e) {
@@ -63,4 +63,15 @@ public class DataBootstrap {
 
 
     }
+
+    // @PreDestroy
+    // public void shutDown(){
+    //     System.out.println("\n\n\n\n Shutting down \n\n\n\n");
+    //     closeCompensationRepository();
+    // }
+
+    // public void closeCompensationRepository(){
+    //     System.out.println("\n\n\n\n Closing Repo \n\n\n\n");
+    //     compensationRepository.saveAll(compensationRepository.findAll());
+    // }
 }

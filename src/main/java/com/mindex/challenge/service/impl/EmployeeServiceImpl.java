@@ -104,11 +104,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Compensation create(Compensation compensation) {
         LOG.debug("Creating compensation [{}]", compensation);
+        
+        // Checks if employee exists before adding them
+        Employee emp = compensation.getEmployee();
+        if(emp == null){
+            throw new RuntimeException("Invalid, entered employee is null");
+        }
+        else if(employeeRepository.findByEmployeeId(emp.getEmployeeId()) == null){
+            throw new RuntimeException("Invalid, entered employee does not exist with id: " + emp.getEmployeeId());
+        }
 
-        //employeeRepository.insert(compensation);
         compensationRepository.insert(compensation);
 
-        return null;
+        return compensation;
     }
 
 
