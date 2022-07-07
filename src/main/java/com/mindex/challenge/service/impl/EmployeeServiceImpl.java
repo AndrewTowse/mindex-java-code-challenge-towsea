@@ -101,6 +101,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         return reports + childReports;
     }
 
+    /**
+     * Function inserts compensation object into compensation repository
+     * @param Compensation compensation
+     * @return Compensation compensation
+     */
     @Override
     public Compensation create(Compensation compensation) {
         LOG.debug("Creating compensation [{}]", compensation);
@@ -120,6 +125,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
 
+    /**
+     * Function finds employee compensation based on given Id
+     * @param String id
+     * @return Compensation compensation
+     */
     @Override
     public Compensation readCompensation(String id) {
         LOG.debug("Retrieving compensation with id [{}]", id);

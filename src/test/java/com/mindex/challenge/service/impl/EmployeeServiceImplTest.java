@@ -1,7 +1,9 @@
 package com.mindex.challenge.service.impl;
 
+import com.mindex.challenge.data.Compensation;
 import com.mindex.challenge.data.Employee;
 import com.mindex.challenge.service.EmployeeService;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
@@ -24,6 +27,11 @@ public class EmployeeServiceImplTest {
 
     private String employeeUrl;
     private String employeeIdUrl;
+
+    private String numberOfReportsUrl;
+
+    private String compensationUrl;
+    private String compensationIdUrl;
 
     @Autowired
     private EmployeeService employeeService;
@@ -38,6 +46,13 @@ public class EmployeeServiceImplTest {
     public void setup() {
         employeeUrl = "http://localhost:" + port + "/employee";
         employeeIdUrl = "http://localhost:" + port + "/employee/{id}";
+
+        // TASK 1 test URLs
+        numberOfReportsUrl = "http://localhost:" + port + "/numberOfReports/{id}";
+
+        // TASK 2 Test URLs
+        compensationUrl = "http://localhost:" + port + "/compensation";
+        compensationIdUrl = "http://localhost:" + port + "/compensation/{id}";
     }
 
     @Test
@@ -83,4 +98,58 @@ public class EmployeeServiceImplTest {
         assertEquals(expected.getDepartment(), actual.getDepartment());
         assertEquals(expected.getPosition(), actual.getPosition());
     }
+
+
+    //TASK 1 TESTS
+
+    @Test
+    public void testNumberOfReportsGet(){
+
+
+
+    }
+
+    //TASK 2 TESTS
+
+    @Test
+    public void testCreateReadCompensation(){
+        
+        //Create employee to pass existence check
+        Employee testEmployee = new Employee();
+        testEmployee.setFirstName("Andrew");
+        testEmployee.setLastName("Towse");
+        testEmployee.setDepartment("Engineering");
+        testEmployee.setPosition("Developer");
+
+        // EMPLOYEE MUST EXIST TO ADD COMPENSATION FOR THEM
+        Employee createdEmployee = restTemplate.postForEntity(employeeUrl, testEmployee, Employee.class).getBody();
+        
+        assertNotNull(createdEmployee.getEmployeeId());
+        assertEmployeeEquivalence(testEmployee, createdEmployee);
+        
+        Compensation testComp = new Compensation();
+        testComp.setEmployee(createdEmployee);
+        testComp.setSalary(23000);
+        testComp.setEffectiveDate("7/6/2022");
+
+        
+        Compensation createdComp = restTemplate.postForEntity(compensationUrl, testComp, Compensation.class).getBody();
+        assertNotNull(createdComp.getEmployee().getEmployeeId());
+
+
+        Compensation readComp = restTemplate.getForEntity(compensationIdUrl, Compensation.class, createdComp.getEmployee().getEmployeeId()).getBody();
+        assertCompensationEquivalence(createdComp, readComp);
+        
+
+
+
+    }
+
+    private static void assertCompensationEquivalence(Compensation expected, Compensation actual) {
+        assertEmployeeEquivalence(expected.getEmployee(), actual.getEmployee());
+        assertEquals(expected.getSalary(), actual.getSalary());
+        assertEquals(expected.getEffectiveDate(), actual.getEffectiveDate());
+    }
+
+
 }

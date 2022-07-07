@@ -50,16 +50,26 @@ public class EmployeeController {
         return employeeService.numberOfReports(id);
     }
 
+    /**
+     * Post Endpoint for create a document of an employee compensation
+     * @param Compensation compensation
+     * @return Compensation compensation
+     */
     @PostMapping("/compensation")
     public Compensation create(@RequestBody Compensation compensation) {
-        LOG.debug("Received employee create request for [{}]", compensation);
+        LOG.debug("Received compensation create request for [{}]", compensation);
 
         return employeeService.create(compensation);
     }
 
+    /**
+     * Get Endpoint for retrieving the compensation document for a specific employee 
+     * @param String id
+     * @return Compensation
+     */
     @GetMapping("/compensation/{id}")
     public Compensation readCompensation(@PathVariable String id) {
-        LOG.debug("Received employee create request for [{}]", id);
+        LOG.debug("Received compensation create request for [{}]", id);
 
         return employeeService.readCompensation(id);
     }
