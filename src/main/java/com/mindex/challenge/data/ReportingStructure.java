@@ -23,7 +23,7 @@ public class ReportingStructure {
         this.employee = employee;
     }
 
-    private int getNumberOfReports(){
+    public int getNumberOfReports(){
         return numberOfReports;
     }
 
